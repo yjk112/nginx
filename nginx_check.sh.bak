@@ -1,0 +1,14 @@
+#!/bin/bash
+# 检测nginx是否启动
+A=`ps -C nginx --no-headers | wc -l`
+if [ $A -eq 0 ]; then
+    # 如果nginx没有启动就启动nginx (请确保这里的路径正确)
+    /usr/sbin/nginx 
+    sleep 2
+    # 如果nginx重启失败，则停掉keepalived服务，进行VIP转移
+    if [ `ps -C nginx --no-headers | wc -l` -eq 0 ]; then
+        killall keepalived
+        # 如果 keepalived 是被 systemd 管理的，用 killall 可能会被自动拉起，稳妥起见可以改成：
+        # systemctl stop keepalived
+    fi
+fi
