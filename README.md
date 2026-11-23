@@ -1,0 +1,2 @@
+# nginx
+nginx的反向代理负载均衡等等和Keepalived主从高可用
